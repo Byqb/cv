@@ -1,0 +1,153 @@
+/* Base styles */
+:root {
+    --bg-color: #282c34;
+    --text-color: #abb2bf;
+    --keyword-color: #c678dd;
+    --function-color: #61afef;
+    --string-color: #98c379;
+    --number-color: #d19a66;
+    --comment-color: #5c6370;
+    --variable-color: #e06c75;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    padding: 20px;
+}
+
+/* Header and navigation */
+header {
+    border-bottom: 1px solid var(--comment-color);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+nav ul li a {
+    color: var(--function-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: var(--keyword-color);
+}
+
+/* Main content */
+main {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
+h1, h2, h3 {
+    color: var(--keyword-color);
+}
+
+h1 {
+    font-size: 2rem;
+    border-bottom: 1px solid var(--variable-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* Code-like styling */
+.code-line::before {
+    content: '> ';
+    color: var(--comment-color);
+}
+
+.keyword {
+    color: var(--keyword-color);
+}
+
+.function {
+    color: var(--function-color);
+}
+
+.string {
+    color: var(--string-color);
+}
+
+.number {
+    color: var(--number-color);
+}
+
+.comment {
+    color: var(--comment-color);
+    font-style: italic;
+}
+
+/* Skills section */
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style-type: none;
+}
+
+.skills-list li {
+    background-color: var(--variable-color);
+    color: var(--bg-color);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: var(--comment-color);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--comment-color);
+    padding-top: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav ul li {
+        margin-bottom: 0.5rem;
+    }
+}
