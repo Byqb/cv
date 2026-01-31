@@ -1,99 +1,256 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Yusuf Rahma - Full Stack Developer. Passionate about creating efficient, scalable, and innovative solutions."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
-        <title>Yusuf Rahma - Developer</title>
-   
-</head>
-<body>
+    <title>Yusuf Rahma - Developer</title>
+  </head>
+  <body>
+    <canvas id="particles-canvas"></canvas>
+    <div class="grid-overlay"></div>
     <header>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#education">Education</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="theme-switcher">
+          <label for="theme-select">🎨</label>
+          <select id="theme-select">
+            <option value="solid">Solid</option>
+            <option value="gradient">Gradient</option>
+            <option value="grid">Grid</option>
+            <option value="particles">Particles</option>
+          </select>
+          <a href="cv.pdf" download class="download-btn">
+            <span class="function">downloadCV</span>()
+          </a>
+        </div>
+      </nav>
     </header>
 
     <main>
-        <section id="about">
-            <h1 class="code-line"><span class="keyword">const</span> <span class="variable">developer</span> = {</h1>
-            <p class="code-line">  <span class="keyword">name</span>: <span class="string">"Yusuf Rahma"</span>,</p>
-            <p class="code-line">  <span class="keyword">title</span>: <span class="string">"Full Stack Developer Soon"</span>,</p>
-            <p class="code-line">  <span class="keyword">bio</span>: <span class="string">"Passionate about creating efficient, scalable, and innovative solutions."</span></p>
-            <h1 class="code-line">};</h1>
-        </section>
+      <section id="about" class="about-container">
+        <div class="about-content">
+          <h1 class="code-line">
+            <span class="keyword">const</span>
+            <span class="variable">developer</span> = {
+          </h1>
+        <p class="code-line">
+          <span class="keyword">name</span>:
+          <span class="string">"Yusuf Rahma"</span>,
+        </p>
+        <p class="code-line">
+          <span class="keyword">title</span>:
+          <span class="string">"Full Stack Developer"</span>,
+        </p>
+        <p class="code-line">
+          <span class="keyword">bio</span>:
+          <span class="string"
+            >"Passionate about creating efficient, scalable, and innovative
+            solutions."</span
+          >
+        </p>
+        <h1 class="code-line">};</h1>
+        </div>
+        <div class="profile-image-container">
+           <img id="github-profile-pic" src="" alt="Yusuf Rahma" class="profile-pic" />
+        </div>
+      </section>
+      </section>
 
-        <section id="experience">
-            <h2 class="code-line"><span class="keyword">function</span> <span class="function">professionalExperience</span>() {</h2>
-            <div class="code-line">  <span class="keyword">return</span> [</div>
-            <div class="code-line">    {</div>
-            <p class="code-line">      <span class="keyword">role</span>: <span class="string">"Bad Developer"</span>,</p>
-            <p class="code-line">      <span class="keyword">company</span>: <span class="string">"Reboot01 Student."</span>,</p>
-            <p class="code-line">      <span class="keyword">period</span>: <span class="string">"2024 - Present"</span>,</p>
-            <p class="code-line">      <span class="keyword">achievements</span>: [</p>
-            <p class="code-line">        <span class="string">"Sleep all the time"</span></p>
-            <p class="code-line">      ]</p>
-            <div class="code-line">    },</div>
-            <div class="code-line">    <span class="comment">NO experiences yet "/</span></div>
-            <div class="code-line">  ];</div>
-            <h2 class="code-line">}</h2>
-        </section>
+      <section id="experience">
+        <h2 class="code-line">
+          <span class="keyword">function</span>
+          <span class="function">professionalExperience</span>() {
+        </h2>
+        <div class="code-line"><span class="keyword">return</span> [</div>
+        <div class="code-line">{</div>
+        <p class="code-line">
+          <span class="keyword">role</span>:
+          <span class="string">"Software Developer Trainee"</span>,
+        </p>
+        <p class="code-line">
+          <span class="keyword">company</span>:
+          <span class="string">"Reboot01"</span>,
+        </p>
+        <p class="code-line">
+          <span class="keyword">period</span>:
+          <span class="string">"2024 - Present"</span>,
+        </p>
+        <p class="code-line"><span class="keyword">achievements</span>: [</p>
+        <p class="code-line">
+          <span class="string"
+            >"Building full-stack applications using Go, JavaScript, and
+            SQL"</span
+          >,
+        </p>
+        <p class="code-line">
+          <span class="string"
+            >"Collaborating on peer-to-peer projects and code reviews"</span
+          >,
+        </p>
+        <p class="code-line">
+          <span class="string"
+            >"Developing problem-solving skills through hands-on coding
+            challenges"</span
+          >
+        </p>
+        <p class="code-line">]</p>
+        <div class="code-line">}</div>
+        <div class="code-line">];</div>
+        <h2 class="code-line">}</h2>
+      </section>
 
-        <section id="education">
-            <h2 class="code-line"><span class="keyword">class</span> <span class="function">Education</span> {</h2>
-            <p class="code-line">  <span class="function">constructor</span>() {</p>
-            <p class="code-line">    <span class="keyword">this</span>.degree = <span class="string">"BSc in Computer Engineering"</span>;</p>
-            <p class="code-line">    <span class="keyword">this</span>.university = <span class="string">"University of Bahrain"</span>;</p>
-            <p class="code-line">    <span class="keyword">this</span>.graduationYear = <span class="number">2026</span>;</p>
-            <p class="code-line">  }</p>
-            <h2 class="code-line">}</h2>
-        </section>
+      <section id="education">
+        <h2 class="code-line">
+          <span class="keyword">class</span>
+          <span class="function">Education</span> {
+        </h2>
+        <p class="code-line"><span class="function">constructor</span>() {</p>
+        <p class="code-line">
+          <span class="keyword">this</span>.degree =
+          <span class="string">"BSc in Computer Engineering"</span>;
+        </p>
+        <p class="code-line">
+          <span class="keyword">this</span>.university =
+          <span class="string">"University of Bahrain"</span>;
+        </p>
+        <p class="code-line">
+          <span class="keyword">this</span>.graduationYear =
+          <span class="number">2026</span>;
+        </p>
+        <p class="code-line">}</p>
+        <h2 class="code-line">}</h2>
+      </section>
 
-        <section id="skills">
-            <h2 class="code-line"><span class="keyword">const</span> <span class="variable">Tech skills</span> = [</h2>
-            <ul class="skills-list">
-              <li>Git</li>
-                <li>Github</li>
-              <li>Java</li>
-                <li>JavaScript</li>
-                <li>Golang</li>
-                <li>Html/css</li>
-                <li>SQL</li>
-                <li>PHP</li>
-                 <li>Laravel</li>
-            </ul>
-            <h2 class="code-line">];</h2>
-        </section>
+      <section id="skills">
+        <!-- Languages & Frameworks -->
+        <h2 class="code-line">
+          <span class="keyword">const</span>
+          <span class="variable">languages</span> = [
+        </h2>
+        <ul class="skills-list">
+          <li>Golang</li>
+          <li>Java</li>
+          <li>Rust</li>
+          <li>JavaScript</li>
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>Node.js</li>
+          <li>Next.js</li>
+          <li>SQL</li>
+          <li>SQLite</li>
+          <li>GraphQL</li>
+          <li>Bash</li>
+        </ul>
+        <h2 class="code-line">];</h2>
 
-        <section id="projects">
-            <h2 class="code-line"><span class="keyword">const</span> <span class="variable">projects</span> = <span class="function">await fetchGitHubRepos</span>() <span class="comment">// Dynamically loaded from GitHub</span></h2>
-            <p class="code-line">[</p>
-            <div id="github-projects">
-                <p class="code-line">  <span class="comment">// Loading projects from GitHub...</span></p>
-            </div>
-            <p class="code-line">];</p>
-        </section>
+        <!-- IT & System -->
+        <h2 class="code-line" style="margin-top: 2rem;">
+            <span class="keyword">const</span>
+            <span class="variable">itSystems</span> = [
+        </h2>
+        <ul class="skills-list soft-skills">
+            <li>IT Support & Troubleshooting</li>
+            <li>Networking Fundamentals</li>
+            <li>Windows/Linux/macOS</li>
+            <li>User Account Management</li>
+            <li>Basic System Security</li>
+        </ul>
+        <h2 class="code-line">];</h2>
 
-        <section id="contact">
-            <h2 class="code-line"><span class="keyword">const</span> <span class="variable">contact</span> = {</h2>
-            <p class="code-line">  <span class="keyword">email</span>: <span class="string">"y7uosif@gmail.com"</span>,</p>
-            <p class="code-line">  <span class="keyword">github</span>: <span class="string">"github.com/Byqb"</span>,</p>
-            <p class="code-line">  <span class="keyword">linkedin</span>: <span class="string">"linkedin.com/in/bnrahma"</span></p>
-            <h2 class="code-line">};</h2>
-        </section>
+        <!-- Tools -->
+        <h2 class="code-line" style="margin-top: 2rem;">
+            <span class="keyword">const</span>
+            <span class="variable">tools</span> = [
+        </h2>
+        <ul class="skills-list">
+            <li>Git</li>
+            <li>Docker</li>
+            <li>WebSocket</li>
+            <li>REST API</li>
+            <li>NPM</li>
+        </ul>
+        <h2 class="code-line">];</h2>
+      </section>
+
+      <section id="projects">
+        <h2 class="code-line">
+          <span class="keyword">const</span>
+          <span class="variable">projects</span> =
+          <span class="function">await fetchGitHubRepos</span>()
+          <span class="comment">// Dynamically loaded from GitHub</span>
+        </h2>
+        <div id="language-stats-container"></div>
+        <p class="code-line">[</p>
+        <div id="github-projects">
+          <p class="code-line">
+            <span class="comment">// Loading projects from GitHub...</span>
+          </p>
+        </div>
+        <p class="code-line">];</p>
+      </section>
+
+      <section id="contact">
+        <h2 class="code-line">
+          <span class="keyword">const</span>
+          <span class="variable">contact</span> = {
+        </h2>
+        <p class="code-line">
+          <span class="keyword">email</span>:
+          <span class="string"
+            >"<a href="mailto:y7uosif@gmail.com" class="project-link"
+              >y7uosif@gmail.com</a
+            >"</span
+          >,
+        </p>
+        <p class="code-line">
+          <span class="keyword">github</span>:
+          <span class="string"
+            >"<a
+              href="https://github.com/Byqb"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="project-link"
+              >github.com/Byqb</a
+            >"</span
+          >,
+        </p>
+        <p class="code-line">
+          <span class="keyword">linkedin</span>:
+          <span class="string"
+            >"<a
+              href="https://linkedin.com/in/bnrahma"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="project-link"
+              >linkedin.com/in/bnrahma</a
+            >"</span
+          >
+        </p>
+        <h2 class="code-line">};</h2>
+      </section>
     </main>
 
     <footer>
-        <p class="comment"> © 2024 Byqb. All rights reserved.</p>
+      <p class="comment">
+        © <span id="current-year">2026</span> Byqb. All rights reserved.
+      </p>
     </footer>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
