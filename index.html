@@ -71,51 +71,14 @@
             </ul>
             <h2 class="code-line">];</h2>
         </section>
-            <p class="code-line">  <span class="comment">// I did not add the project in Github yet! </span></p>
+
         <section id="projects">
-            <h2 class="code-line"><span class="keyword">const</span> <span class="variable">projects</span> = [</h2>
-            <p class="code-line">  {</p>
-            <p class="code-line">    <span class="keyword">name</span>: <span class="string">"Go-Reloaded"</span>,</p>
-            <p class="code-line">    <span class="keyword">description</span>: <span class="string">"First Project"</span>,</p>
-            <p class="code-line">    <span class="keyword">link</span>: <span class="string">"https://github.com/Byqb/Go-Reloaded"</span></p>
-            <p class="code-line">  },</p>
-            <p class="code-line">  <span class="comment">// Add more projects here</span></p>
-            <p class="code-line">  {</p>
-              <p class="code-line">    <span class="keyword">name</span>: <span class="string">"Ascii-Art"</span>,</p>
-              <p class="code-line">    <span class="keyword">description</span>: <span class="string">"Second Project"</span>,</p>
-              <p class="code-line">    <span class="keyword">link</span>: <span class="string">"https://github.com/Byqb/ascii-art"</span></p>
-              <p class="code-line">  },</p>
-              <p class="code-line">  {</p>
-                <p class="code-line">    <span class="keyword">name</span>: <span class="string">"Ascii-Art-Optional"</span>,</p>
-                <p class="code-line">    <span class="keyword">description</span>: <span class="string">"Built Optional : <br> fs / color / justify / output / reverse   "</span>,</p>
-                <p class="code-line">    <span class="keyword">link</span>: <span class="string">"https://github.com/Byqb/ascii-art"</span></p>
-                <p class="code-line">  },</p>
-                <p class="code-line">  {</p>
-                  <p class="code-line">    <span class="keyword">name</span>: <span class="string">"Ascii-Art-Web"</span>,</p>
-                  <p class="code-line">    <span class="keyword">description</span>: <span class="string">"Built on Web "</span>,</p>
-                  <p class="code-line">    <span class="keyword">link</span>: <span class="string">"https://github.com/Byqb/ascii-art-web-styliz"</span></p>
-                  <p class="code-line">  },</p>
-                  <p class="code-line">  {</p>
-                    <p class="code-line">    <span class="keyword">name</span>: <span class="string">"Groupie-Tracker"</span>,</p>
-                    <p class="code-line">    <span class="keyword">description</span>: <span class="string">"Built API"</span>,</p>
-                    <p class="code-line">    <span class="keyword">link</span>: <span class="string">"https://github.com/Byqb/groupie-tracker"</span></p>
-                    <p class="code-line">  },</p>
-                    <p class="code-line">  {</p>
-                      <p class="code-line">    <span class="keyword">name</span>: <span class="string">"Lem-in"</span>,</p>
-                      <p class="code-line">    <span class="keyword">description</span>: <span class="string">"Built Ants "</span>,</p>
-                      <p class="code-line">    <span class="keyword">link</span>: <span class="string">"https://github.com/Byqb/Lem-in"</span></p>
-                      <p class="code-line">  },</p>
-                      <p class="code-line">  {</p>
-                        <p class="code-line">    <span class="keyword">name</span>: <span class="string">"Net-Cat"</span>,</p>
-                        <p class="code-line">    <span class="keyword">description</span>: <span class="string">"Built Chat"</span>,</p>
-                        <p class="code-line">    <span class="keyword">link</span>: <span class="string">"https://github.com/Byqb/Net-Cat"</span></p>
-                        <p class="code-line">  },</p>
-                        <p class="code-line">  {</p>
-                          <p class="code-line">    <span class="keyword">name</span>: <span class="string">"Forum"</span>,</p>
-                          <p class="code-line">    <span class="keyword">description</span>: <span class="string">"Built like redit"</span>,</p>
-                          <p class="code-line">    <span class="keyword">link</span>: <span class="string">"https://github.com/Byqb/Forum"</span></p>
-                          <p class="code-line">  },</p>
-            <h2 class="code-line">];</h2>
+            <h2 class="code-line"><span class="keyword">const</span> <span class="variable">projects</span> = <span class="function">await fetchGitHubRepos</span>() <span class="comment">// Dynamically loaded from GitHub</span></h2>
+            <p class="code-line">[</p>
+            <div id="github-projects">
+                <p class="code-line">  <span class="comment">// Loading projects from GitHub...</span></p>
+            </div>
+            <p class="code-line">];</p>
         </section>
 
         <section id="contact">
@@ -130,5 +93,7 @@
     <footer>
         <p class="comment"> © 2024 Byqb. All rights reserved.</p>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
