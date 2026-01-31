@@ -136,6 +136,26 @@ footer {
     padding-top: 1rem;
 }
 
+/* Project links */
+.project-link {
+    color: var(--function-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.project-link:hover {
+    color: var(--keyword-color);
+    text-decoration: underline;
+}
+
+.project-item {
+    margin-bottom: 0.5rem;
+}
+
+#github-projects {
+    padding-left: 0;
+}
+
 /* Responsive design */
 @media (max-width: 600px) {
     body {
