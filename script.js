@@ -261,36 +261,38 @@ function initParticles() {
     animate();
 }
 
-// Fetch GitHub Profile
-async function fetchGitHubProfile() {
-    try {
-        const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}`);
-        if (!response.ok) throw new Error('Failed to fetch profile');
-        
-        const data = await response.json();
-        const profilePic = document.getElementById('github-profile-pic');
-        if (profilePic && data.avatar_url) {
-            profilePic.src = data.avatar_url;
-            
-            // // Random border color animation
-            // const colors = ['#c678dd', '#61afef', '#98c379', '#e06c75', '#d19a66', '#56b6c2'];
-            // setInterval(() => {
-            //     const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            //     profilePic.style.borderColor = randomColor;
-            //     profilePic.style.boxShadow = `0 0 20px ${randomColor}4d`; // 4d = 30% opacity
-            // }, 3000); // Changed to 3s for visibility (user said 30s but that is very slow)
-        }
-    } catch (error) {
-        console.error('Error fetching profile:', error);
+// Set Profile Picture and Favicon 
+function setProfileContent() {
+    const profilePic = document.getElementById('profile-pic');
+    if (profilePic) {
+        profilePic.src = 'pic.gif';
     }
+
+    const favicon = document.querySelector('link[rel="icon"]');
+    if (favicon) {
+        favicon.href = 'pic.gif';
+    }
+   
 }
 
 // Fetch repos when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     fetchGitHubRepos();
-    fetchGitHubProfile();
+    setProfileContent();
     initThemeSwitcher();
     
+    // Loading Screen Logic
+    setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+            // Remove from DOM after transition to allow clicks
+            setTimeout(() => {
+                loadingScreen.remove();
+            }, 500);
+        }
+    }, 2500); // Show for 2.5 seconds
+
     // Update footer year dynamically
     const yearElement = document.getElementById('current-year');
     if (yearElement) {
