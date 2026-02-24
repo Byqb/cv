@@ -1,49 +1,134 @@
-// Fetch and display GitHub repositories
 const GITHUB_USERNAME = 'Byqb';
+const CACHE_KEY = 'github_repos_cache';
+const CACHE_DURATION = 1000 * 60 * 60;
+
+function getCachedRepos() {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (!cached) return null;
+    
+    try {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp > CACHE_DURATION) {
+            localStorage.removeItem(CACHE_KEY);
+            return null;
+        }
+        return data;
+    } catch {
+        return null;
+    }
+}
+
+function setCachedRepos(repos) {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({
+        data: repos,
+        timestamp: Date.now()
+    }));
+}
+
+function showSkeletonLoading() {
+    const projectsContainer = document.getElementById('github-projects');
+    if (!projectsContainer) return;
+    
+    projectsContainer.innerHTML = `
+        <div class="skeleton-card">
+            <div class="skeleton-line" style="width: 40%"></div>
+            <div class="skeleton-line" style="width: 80%"></div>
+            <div class="skeleton-line" style="width: 60%"></div>
+        </div>
+        <div class="skeleton-card">
+            <div class="skeleton-line" style="width: 35%"></div>
+            <div class="skeleton-line" style="width: 75%"></div>
+            <div class="skeleton-line" style="width: 50%"></div>
+        </div>
+    `;
+}
+
+function showErrorState(message, showRetry = true) {
+    const projectsContainer = document.getElementById('github-projects');
+    const statsContainer = document.getElementById('language-stats-container');
+    if (!projectsContainer) return;
+    
+    if (statsContainer) statsContainer.innerHTML = '';
+    
+    const retryButton = showRetry ? '<button class="retry-btn" onclick="fetchGitHubRepos()">Retry</button>' : '';
+    projectsContainer.innerHTML = `
+        <div class="error-state">
+            <p class="code-line"><span class="comment">// ${message}</span></p>
+            ${retryButton}
+        </div>
+    `;
+}
 
 async function fetchGitHubRepos() {
     const projectsContainer = document.getElementById('github-projects');
+    
+    showSkeletonLoading();
+    
+    const cachedRepos = getCachedRepos();
+    if (cachedRepos) {
+        renderRepos(cachedRepos);
+        return;
+    }
     
     try {
         const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`);
         
         if (!response.ok) {
+            if (response.status === 403) {
+                showErrorState('API rate limit exceeded. Try again later.', true);
+                return;
+            }
+            if (response.status === 404) {
+                showErrorState('User not found.', false);
+                return;
+            }
             throw new Error('Failed to fetch repositories');
         }
         
         const repos = await response.json();
         
-        // Filter out forked repos and the cv repo itself
+        if (!Array.isArray(repos)) {
+            showErrorState('Unable to load projects.', true);
+            return;
+        }
+        
         const ownRepos = repos.filter(repo => !repo.fork);
         
-        // Calculate and display language stats
-        renderLanguageStats(ownRepos);
-        
-        // Clear loading message
-        projectsContainer.innerHTML = '';
-        
-        // Display each repository
-        ownRepos.forEach(repo => {
-            const repoElement = createRepoElement(repo);
-            projectsContainer.appendChild(repoElement);
-        });
-        
-        // If no repos found
-        if (ownRepos.length === 0) {
-            projectsContainer.innerHTML = '<p class="code-line">  <span class="comment">// No projects found</span></p>';
-        }
+        setCachedRepos(ownRepos);
+        renderRepos(ownRepos);
         
     } catch (error) {
         console.error('Error fetching repos:', error);
-        projectsContainer.innerHTML = '<p class="code-line">  <span class="comment">// Error loading projects. Please check back later.</span></p>';
+        showErrorState('Error loading projects. Please try again.', true);
     }
+}
+
+function renderRepos(ownRepos) {
+    const projectsContainer = document.getElementById('github-projects');
+    if (!projectsContainer) return;
+    
+    renderLanguageStats(ownRepos);
+    projectsContainer.innerHTML = '';
+    
+    if (ownRepos.length === 0) {
+        projectsContainer.innerHTML = `
+            <div class="empty-state">
+                <p class="code-line"><span class="comment">// No public projects yet. Check back soon!</span></p>
+            </div>
+        `;
+        return;
+    }
+    
+    ownRepos.forEach(repo => {
+        const repoElement = createRepoElement(repo);
+        projectsContainer.appendChild(repoElement);
+    });
 }
 
 function renderLanguageStats(repos) {
     const statsContainer = document.getElementById('language-stats-container');
     if (!statsContainer) return;
 
-    // Calculate stats
     const apiLanguages = {};
     let totalCount = 0;
 
@@ -56,7 +141,6 @@ function renderLanguageStats(repos) {
 
     if (totalCount === 0) return;
 
-    // Language colors (GitHub style)
     const langColors = {
         'JavaScript': '#f1e05a',
         'TypeScript': '#2b7489',
@@ -73,11 +157,9 @@ function renderLanguageStats(repos) {
         'C': '#555555'
     };
 
-    // Sort by usage
     const sortedLangs = Object.entries(apiLanguages)
         .sort(([, a], [, b]) => b - a);
 
-    // Create Bar
     let barHTML = '<div class="lang-bar">';
     sortedLangs.forEach(([lang, count]) => {
         const percentage = (count / totalCount) * 100;
@@ -86,7 +168,6 @@ function renderLanguageStats(repos) {
     });
     barHTML += '</div>';
 
-    // Create Legend
     let legendHTML = '<div class="lang-legend">';
     sortedLangs.forEach(([lang, count]) => {
         const percentage = Math.round((count / totalCount) * 100);
@@ -132,7 +213,6 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
-// Theme switching functionality
 let animationFrameId = null;
 let resizeHandler = null;
 
@@ -140,11 +220,9 @@ function initThemeSwitcher() {
     const themeSelect = document.getElementById('theme-select');
     const savedTheme = localStorage.getItem('cv-theme') || 'solid';
     
-    // Set initial theme
     setTheme(savedTheme);
     themeSelect.value = savedTheme;
     
-    // Listen for changes
     themeSelect.addEventListener('change', (e) => {
         setTheme(e.target.value);
         localStorage.setItem('cv-theme', e.target.value);
@@ -154,57 +232,46 @@ function initThemeSwitcher() {
 function setTheme(theme) {
     const body = document.body;
     
-    // Remove all theme classes
     body.classList.remove('theme-solid', 'theme-gradient', 'theme-grid', 'theme-particles');
     
-    // Cleanup particles animation
     if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
     }
     
-    // Cleanup resize listener
     if (resizeHandler) {
         window.removeEventListener('resize', resizeHandler);
         resizeHandler = null;
     }
     
-    // Apply new theme
     if (theme !== 'solid') {
         body.classList.add(`theme-${theme}`);
     }
     
-    // Start particles animation if needed
     if (theme === 'particles') {
         initParticles();
     }
 }
 
-// Particles animation
 function initParticles() {
     const canvas = document.getElementById('particles-canvas');
-    if (!canvas) return; // Guard clause
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     
-    // Set canvas size
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
     
-    // Initial resize
     resizeCanvas();
     
-    // Store handler for cleanup
     resizeHandler = resizeCanvas;
     window.addEventListener('resize', resizeHandler);
     
-    // Particle settings
     const particles = [];
     const particleCount = 50;
     const colors = ['#c678dd', '#61afef', '#98c379', '#e06c75'];
     
-    // Create particles
     for (let i = 0; i < particleCount; i++) {
         particles.push({
             x: Math.random() * canvas.width,
@@ -216,28 +283,22 @@ function initParticles() {
         });
     }
     
-    // Animation loop
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Update and draw particles
         particles.forEach((p, i) => {
-            // Update position
             p.x += p.vx;
             p.y += p.vy;
             
-            // Bounce off edges
             if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
             if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
             
-            // Draw particle
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
             ctx.fillStyle = p.color;
             ctx.globalAlpha = 0.6;
             ctx.fill();
             
-            // Draw connections
             particles.slice(i + 1).forEach(p2 => {
                 const dx = p.x - p2.x;
                 const dy = p.y - p2.y;
@@ -261,42 +322,146 @@ function initParticles() {
     animate();
 }
 
-// Set Profile Picture and Favicon 
-function setProfileContent() {
-    const profilePic = document.getElementById('profile-pic');
-    if (profilePic) {
-        profilePic.src = 'pic.gif';
-    }
-
-    const favicon = document.querySelector('link[rel="icon"]');
-    if (favicon) {
-        favicon.href = 'pic.gif';
-    }
-   
+function initColorTheme() {
+    const toggleBtn = document.getElementById('color-theme-toggle');
+    const savedTheme = localStorage.getItem('color-theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    applyColorTheme(initialTheme);
+    
+    toggleBtn.addEventListener('click', () => {
+        const currentTheme = document.body.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        applyColorTheme(newTheme);
+        localStorage.setItem('color-theme', newTheme);
+    });
+    
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('color-theme')) {
+            applyColorTheme(e.matches ? 'dark' : 'light');
+        }
+    });
 }
 
-// Fetch repos when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    fetchGitHubRepos();
-    setProfileContent();
-    initThemeSwitcher();
+function applyColorTheme(theme) {
+    if (theme === 'light') {
+        document.body.setAttribute('data-theme', 'light');
+    } else {
+        document.body.removeAttribute('data-theme');
+    }
+}
+
+function initHamburgerMenu() {
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
     
-    // Loading Screen Logic
+    if (!hamburger || !navMenu) return;
+    
+    hamburger.addEventListener('click', () => {
+        const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+        hamburger.setAttribute('aria-expanded', !isExpanded);
+        navMenu.classList.toggle('active');
+    });
+    
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.setAttribute('aria-expanded', 'false');
+            navMenu.classList.remove('active');
+        });
+    });
+}
+
+function initScrollSpy() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    
+    if (!sections.length || !navLinks.length) return;
+    
+    const observerOptions = {
+        rootMargin: '-50% 0px -50% 0px',
+        threshold: 0
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${id}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, observerOptions);
+    
+    sections.forEach(section => observer.observe(section));
+}
+
+function initLazyLoadRepos() {
+    const projectsSection = document.getElementById('projects');
+    if (!projectsSection) return;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                fetchGitHubRepos();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    observer.observe(projectsSection);
+}
+
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+            .then(reg => console.log('Service Worker registered'))
+            .catch(err => console.log('Service Worker registration failed:', err));
+    }
+}
+
+function initBackToTop() {
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (!backToTopBtn) return;
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    });
+    
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initThemeSwitcher();
+    initColorTheme();
+    initHamburgerMenu();
+    initScrollSpy();
+    initLazyLoadRepos();
+    initBackToTop();
+    registerServiceWorker();
+    
     setTimeout(() => {
         const loadingScreen = document.getElementById('loading-screen');
         if (loadingScreen) {
             loadingScreen.classList.add('hidden');
-            // Remove from DOM after transition to allow clicks
             setTimeout(() => {
                 loadingScreen.remove();
-            }, 500);
+            }, 300);
         }
-    }, 2500); // Show for 2.5 seconds
+    }, 800);
 
-    // Update footer year dynamically
     const yearElement = document.getElementById('current-year');
     if (yearElement) {
         yearElement.textContent = new Date().getFullYear();
     }
 });
-
